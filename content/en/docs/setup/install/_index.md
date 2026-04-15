@@ -29,14 +29,11 @@ You can also install [on a single local machine](https://www.spinnaker.io/setup/
 Installing a complete Spinnaker involves these steps:
 1. [Install Halyard](/docs/setup/install/halyard/)
 1. [Choose a cloud provider](/docs/setup/install/providers/)
-1. [Choose an environment](/docs/setup/install/environment/)
-1. [Choose a storage service](/docs/setup/install/storage/)
+1. [Choose an installation method](/docs/setup/install/environment/)
+1. [Configure a database for storage](/docs/setup/install/storage/)
 1. [Deploy Spinnaker](/docs/setup/install/deploy/)
-1. [Back up your config](/docs/setup/install/backups/)
-1. [Configure everything else](/docs/setup/other_config/) (which includes a lot of
-  stuff you need before you can use Spinnaker in production)
-1. [Productionize Spinnaker](/docs/setup/productionize/) (which mainly helps you
-  configure Spinnaker to scale for production)
+1. [Configure everything else](/docs/setup/other_config/)
+1. [Productionize Spinnaker](/docs/setup/productionize/)
 
 ## And then what?
 
