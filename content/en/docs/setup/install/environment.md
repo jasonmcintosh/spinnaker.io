@@ -5,7 +5,8 @@ description: Based on your use case, choose how you want to install Spinnaker.
 weight: 30
 ---
 
-In this step, you tell Halyard in what type of environment to install Spinnaker.
+In this step, you choose where to install Spinnaker. The recommended path is an installation into a
+Kubernetes cluster
 
 The recommended path is a distributed installation onto a Kubernetes cluster,
 but all of these methods are supported:
@@ -30,51 +31,29 @@ but all of these methods are supported:
 
 ## Distributed installation
 
-Distributed installations are for development orgs with large resource
-footprints, and for those who can't afford downtime during Spinnaker updates.
+Kubernetes installations are recommended for most organizations and even
+for test purposes. Spinnaker is deployed to a namespace in a kubernetes cluster
+[microservice](/docs/reference/architecture/) deployed independently.
 
 Spinnaker is deployed to a remote cloud, with each
 [microservice](/docs/reference/architecture/) deployed independently. Halyard
 creates a smaller, headless Spinnaker to update your Spinnaker and its
 microservices, ensuring zero-downtime updates.
 
-1. Run the following command, using the `$ACCOUNT` name you created when you
-configured the provider:
+1. Make sure [kubectl is installed](https://kubernetes.io/docs/tasks/tools/)
+2. Optionally,
+   configure [Kubernetes probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/)
+   for your Spinnaker services in their deployment manifests (in the `~/spinnaker-kustomize/base/*/deployment.yaml`
+   files.
+3. Adjust the domains. Look for any example.com reference and replace with your DNS domain.
+4. Create a file with the spinnaker kubernetes resources and apply it
+    1. `kubectl kustomize -o spinnaker.yaml`
+    2. `kubectl apply -f spinnaker.yaml`
+5. Get the ingress IP address and create DNS entries for your new spinnaker domain to this new entry
 
-   ```
-   hal config deploy edit --type distributed --account-name $ACCOUNT
-   ```
-
-1. If you haven't already done so, configure a provider for the environment in
-which you will install Spinnaker.
-
-   This must be on a Kubernetes cluster. It does not have to be the same
-   provider as the one you're using to deploy your applications.
-
-   * [Kubernetes](/docs/setup/install/providers/kubernetes-v2)
-
-   We recommend at least 4 cores and 16GB of RAM available in the cluster where
-   you will deploy Spinnaker.
-
-1. Make sure [kubectl is installed](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-on the machine running Halyard.
-
-   After you install it, you might need to update the `$PATH` to ensure Halyard
-   can find it, and if Halyard was already running you might need to restart it
-   to pick up the new `$PATH`:
-
-   `hal shutdown`
-
-   Then invoke any `hal` command to restart the Halyard daemon.
-   
-1. Optionally, configure [Kubernetes liveness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/)
-for your Spinnaker services, setting the `initialDelaySeconds` to the upper bound of your longest service startup time:
-
-   ```
-   hal config deploy edit --liveness-probe-enabled true --liveness-probe-initial-delay-seconds $LONGEST_SERVICE_STARTUP_TIME
-   ```  
-
-<span class="begin-collapsible-section"></span>
+REMINDER:  This basic setup defaults with a SIMPLE username/password auth.  It's recommended to change
+this from the default or better yet, use an identity provider (saml/oidc/ldap) solution.  The spinnaker
+project does integration tests today with Keycloak as a known out of the box solution.
 
 ## Local Debian
 
